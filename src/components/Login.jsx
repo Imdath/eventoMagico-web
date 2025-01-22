@@ -1,17 +1,37 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { addUser } from '../utils/userSlice'
+import customAxios from '../utils/customAxios'
+import { useDispatch } from 'react-redux'
 
 const Login = () => {
+	const navigate = useNavigate()
+	const dispatch = useDispatch()
 	const [loginForm, setLoginForm] = useState({
-		email: 'forlan@mailinator.com',
-		password: 'Forlan@123'
+		email: 'imdath@mailinator.com',
+		password: 'Imdath@123'
 	})
 
 	const handleLoginForm = (name, value) => {
 		setLoginForm((prev) => ({ ...prev, [name]: value }))
 	}
 
-	const handleOnLogin = async () => {}
+	const handleOnLogin = async () => {
+		try {
+			const result = await customAxios('/login', 'POST', {
+				email: loginForm.email,
+				password: loginForm.password
+			})
+
+			// Dispatch user data to the Redux store
+			dispatch(addUser(result.data))
+
+			// Navigate to home page after successful login
+			navigate('/')
+		} catch (error) {
+			// Error will be handled inside customAxios, but you can also do something here
+		}
+	}
 
 	return (
 		<div className='flex justify-center m-4'>
