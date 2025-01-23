@@ -17,7 +17,7 @@ const Events = () => {
 	const fetchEvents = async () => {
 		try {
 			const result = await customAxios('/events', 'GET', null, true, {
-				showLoader: false,
+				showLoader: true,
 				showToast: false
 			})
 			dispatch(addEvents(result.data))

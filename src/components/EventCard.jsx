@@ -27,7 +27,7 @@ const EventCard = ({ event, user, setEditDialogOpen, setDeleteDialogOpen }) => {
 			</div>
 			<div className='mt-4 flex flex-col items-center'>
 				<Link
-					to={`/event/view/${event._id}`}
+					to={`/event/${event._id}`}
 					className='btn bg-gradient-to-r from-[#ff5f5f] via-[#ff0077] to-[#d1006b] text-white font-bold hover:scale-110 transition-transform duration-300 mb-2'
 				>
 					More Details

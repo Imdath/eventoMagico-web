@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import customAxios from '../utils/customAxios'
 
 const SignUp = () => {
 	const [signUpForm, setSignUpForm] = useState({
@@ -10,6 +11,7 @@ const SignUp = () => {
 		age: '',
 		gender: 'male'
 	})
+	const navigate = useNavigate()
 
 	const handleSignUpForm = (name, value) => {
 		setSignUpForm((prev) => ({ ...prev, [name]: value }))
@@ -17,6 +19,22 @@ const SignUp = () => {
 
 	const handleOnSignUp = async () => {
 		// Add signup logic here
+		try {
+			await customAxios('/signup', 'POST', {
+				...signUpForm
+			})
+			setSignUpForm({
+				firstName: '',
+				lastName: '',
+				email: '',
+				password: '',
+				age: '',
+				gender: 'male'
+			})
+			navigate('/login')
+		} catch (error) {
+			// error
+		}
 	}
 
 	return (

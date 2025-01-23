@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import customAxios from '../utils/customAxios'
 
 const Controls = () => {
@@ -23,10 +23,7 @@ const Controls = () => {
 		gender: ''
 	})
 
-	const [users] = useState([
-		{ id: 1, name: 'John Doe', email: 'john.doe@example.com' },
-		{ id: 2, name: 'Jane Smith', email: 'jane.smith@example.com' }
-	])
+	const [users, setUsers] = useState(null)
 
 	const [dialogOpen, setDialogOpen] = useState(null)
 
@@ -75,6 +72,24 @@ const Controls = () => {
 			// error
 		}
 	}
+
+	const fetchUsers = async () => {
+		try {
+			const result = await customAxios('/users', 'GET', null, true, {
+				showLoader: true,
+				showToast: false
+			})
+			setUsers(result.data)
+		} catch (error) {
+			// error
+		}
+	}
+
+	useEffect(() => {
+		if (dialogOpen === 'viewUsers') {
+			fetchUsers()
+		}
+	}, [dialogOpen])
 
 	return (
 		<div className='container mx-auto p-4'>
@@ -380,22 +395,24 @@ const Controls = () => {
 						<h2 className='text-2xl font-bold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500'>
 							Registered Users
 						</h2>
-						<div
-							className='overflow-y-auto h-[60vh] space-y-4'
-							style={{ scrollbarWidth: 'none' }}
-						>
-							<ul className='flex flex-col gap-2'>
-								{users.map((user) => (
-									<li
-										key={user.id}
-										className='p-4 bg-base-200 rounded-lg shadow-md'
-									>
-										<p className='text-lg font-bold'>{user.name}</p>
-										<p className='text-sm text-gray-500'>{user.email}</p>
-									</li>
-								))}
-							</ul>
-						</div>
+						{users && (
+							<div
+								className='overflow-y-auto h-[60vh] space-y-4'
+								style={{ scrollbarWidth: 'none' }}
+							>
+								<ul className='flex flex-col gap-2'>
+									{users.map((user) => (
+										<li
+											key={user._id}
+											className='p-4 bg-base-200 rounded-lg shadow-md'
+										>
+											<p className='text-lg font-bold'>{user.firstName}</p>
+											<p className='text-sm text-gray-500'>{user.email}</p>
+										</li>
+									))}
+								</ul>
+							</div>
+						)}
 						<div className='flex justify-center mt-4 gap-2'>
 							<button
 								type='button'

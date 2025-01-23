@@ -9,6 +9,7 @@ import Controls from './components/Controls'
 import SignUp from './components/SignUp'
 import { Provider } from 'react-redux'
 import ProtectedRoute from './components/ProtectedRoute'
+import EventDetails from './components/EventDetails'
 
 const App = () => {
 	return (
@@ -26,6 +27,7 @@ const App = () => {
 						<Route path='/login' element={<Login />} />
 						<Route path='/signup' element={<SignUp />} />
 						<Route path='/' element={<Events />} />
+						<Route path='/event/:id' element={<EventDetails />} />
 						<Route path='/registrations' element={<Registrations />} />
 						<Route path='/controls' element={<Controls />} />
 					</Route>
