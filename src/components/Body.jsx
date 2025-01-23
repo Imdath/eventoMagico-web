@@ -5,6 +5,7 @@ import Footer from './Footer'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCookie } from '../utils/functions'
 import customAxios from '../utils/customAxios'
+import { addUser } from '../utils/userSlice'
 
 const Body = () => {
 	const { status, message, loading, user } = useSelector((store) => store.user)
@@ -12,23 +13,20 @@ const Body = () => {
 	const cookie = getCookie('token')
 	const dispatch = useDispatch()
 
-	console.log(user)
-
 	const fetchUser = async () => {
 		try {
 			const result = await customAxios('/profile/view', 'GET', null, true, {
 				showLoader: false,
 				showToast: false
 			})
-
-			dispatch(addUser(result))
+			dispatch(addUser(result.data))
 		} catch (error) {
 			// Handle error if needed (will be shown as toast already)
 		}
 	}
 
 	useEffect(() => {
-		if (cookie) {
+		if (cookie && !user) {
 			fetchUser()
 		}
 	}, [])
